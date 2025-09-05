@@ -1,0 +1,6 @@
+@Mini_Library_HostAddress = http://localhost:5215
+
+GET {{Mini_Library_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
