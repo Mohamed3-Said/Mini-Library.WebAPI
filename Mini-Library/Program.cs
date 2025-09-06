@@ -28,6 +28,8 @@ namespace Mini_Library
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddAutoMapper(Config =>
             {
                 Config.AddMaps(typeof(AssemplyRefernceMappingProfile).Assembly);
