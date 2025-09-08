@@ -46,7 +46,6 @@ namespace Persistence.Repositories
                 .Include(e=>e.Subordinates)
                 .Include(e=>e.Users)
                 .FirstOrDefaultAsync(e=>e.EmpId==id);
-
         }
 
         public async Task<IEnumerable<Employee>> GetSubordinatesAsync(int supervisorId)

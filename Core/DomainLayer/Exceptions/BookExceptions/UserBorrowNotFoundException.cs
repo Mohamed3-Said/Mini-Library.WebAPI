@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions.BookExceptions
 {
-    public sealed class BookNotFoundedException(int id ) : NotfoundException($"Book With id {id} is Not Found ")
+    public sealed class UserBorrowNotFoundException(int UBorrowId) : NotfoundException($"UserBorrow With id {UBorrowId} is Not Found")
     {
-
     }
 }
