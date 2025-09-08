@@ -14,7 +14,8 @@ namespace Service.Profile.BookModuleProfile
         public UserBorrowProfile()
         {
             CreateMap<CreateUserBorrowDto, UserBorrow>();
-            CreateMap<UpdateUserBorrowDto, UserBorrow>();
+            CreateMap<UpdateUserBorrowDto, UserBorrow>()
+                 .ForMember(dest => dest.BookId, opt => opt.MapFrom(src => src.BookId));
             CreateMap<UserBorrow, UserBorrowToReadDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))

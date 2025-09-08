@@ -22,19 +22,28 @@ namespace Persistence.Repositories
                 _dbContext.UserBorrows.Remove(userborrow);
         }
 
-        public async Task<IEnumerable<UserBorrow>> GetAllAsync() => await _dbContext.UserBorrows.AsNoTracking().ToListAsync();
+        public async Task<IEnumerable<UserBorrow>> GetAllAsync()
+        {
+           return await _dbContext.UserBorrows
+                .AsNoTracking()
+                .Include(ub=>ub.User)
+                .Include(ub=>ub.Book)
+                .ToListAsync();
+        }
         public async Task<UserBorrow?> GetByIdAsync(int UserBorrowId)
         {
           return await _dbContext.UserBorrows
                 .AsNoTracking()
-                .Include(U => U.User)
-                .Include(B => B.Book)
+                .Include(ub => ub.User)
+                .Include(ub => ub.Book)
                 .FirstOrDefaultAsync(UB => UB.UserBorrowId == UserBorrowId);
         }
         public async Task<IEnumerable<UserBorrow>> GetBorrowsByBookId(int BookId)
         {
             return await _dbContext.UserBorrows
                  .AsNoTracking()
+                 .Include(ub => ub.User)
+                 .Include(ub => ub.Book)
                  .Where(UB=>UB.BookId == BookId)  
                  .ToListAsync();
                 
@@ -44,6 +53,8 @@ namespace Persistence.Repositories
         {
            return await _dbContext.UserBorrows
                 .AsNoTracking()
+                .Include(ub => ub.User)
+                .Include(ub => ub.Book)
                 .Where(UB=>UB.UserSSN == ssn)
                 .ToListAsync();
         }

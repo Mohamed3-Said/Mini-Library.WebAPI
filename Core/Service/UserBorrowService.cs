@@ -18,7 +18,11 @@ namespace Service
         {
             var userborrow = _mapper.Map<CreateUserBorrowDto,UserBorrow>(createuserBorrow);
              await  _unitOfWork.UserBorrowRepository.AddAsync(userborrow);
-            return _mapper.Map<UserBorrow,UserBorrowToReadDto>(userborrow);
+             await _unitOfWork.SaveChangesAsync();
+
+            //Return Create => include(username) , (book Tittle)
+            var created = await _unitOfWork.UserBorrowRepository.GetByIdAsync(userborrow.UserBorrowId);
+            return _mapper.Map<UserBorrow,UserBorrowToReadDto>(created);
         }
 
         public async Task<UserBorrowToReadDto> UpdateBorrowAsync(UpdateUserBorrowDto updateuserBorrow)
@@ -27,8 +31,16 @@ namespace Service
             if(userborrow is not  null)
             {
                 _mapper.Map<UpdateUserBorrowDto, UserBorrow>(updateuserBorrow,userborrow);
+                // Important: explicitly update BookId
+                userborrow.BookId = updateuserBorrow.BookId;
+                // clear navigation property so EF rebinds it
+                userborrow.Book = null!;
                 await _unitOfWork.UserBorrowRepository.UpdateAsync(userborrow);
-                return _mapper.Map<UserBorrow,UserBorrowToReadDto>(userborrow);
+                await _unitOfWork.SaveChangesAsync();
+
+                //Return Create => include(username) , (book Tittle)
+                var created = await _unitOfWork.UserBorrowRepository.GetByIdAsync(userborrow.UserBorrowId);
+                return _mapper.Map<UserBorrow,UserBorrowToReadDto>(created);
             }
             throw new UserBorrowNotFoundException(updateuserBorrow.UserBorrowId);
         }
@@ -39,6 +51,7 @@ namespace Service
             if (userborrow is not null)
             {
                 await _unitOfWork.UserBorrowRepository.DeleteAsync(userBorrowid);
+                await _unitOfWork.SaveChangesAsync();
                 return true;
             }
             return false;
