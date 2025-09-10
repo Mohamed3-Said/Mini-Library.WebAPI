@@ -9,6 +9,7 @@ namespace DomainLayer.Contracts
     public interface IUnitOfWork
     {
         IUserBorrowRepository UserBorrowRepository { get; }
+        IAuthorRepository AuthorRepository { get; }
         Task<int> SaveChangesAsync();
     }
 }

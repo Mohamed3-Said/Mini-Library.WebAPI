@@ -14,11 +14,14 @@ namespace Persistence.Repositories
         private readonly LibraryDbContext _dbContext;
         public IUserBorrowRepository UserBorrowRepository { get; }
 
+        public IAuthorRepository AuthorRepository {  get; }
+
         // Constructor
-        public UnitOfWork(LibraryDbContext dbContext, IUserBorrowRepository userBorrowRepository)
+        public UnitOfWork(LibraryDbContext dbContext, IUserBorrowRepository userBorrowRepository, IAuthorRepository authorRepository)
         {
             _dbContext = dbContext;
             UserBorrowRepository = userBorrowRepository;
+            AuthorRepository = authorRepository;
         }
 
         public async Task<int> SaveChangesAsync()
