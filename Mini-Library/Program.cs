@@ -35,6 +35,14 @@ namespace Mini_Library
             builder.Services.AddScoped<IUserBorrowService, UserBorrowService>();
             builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
             builder.Services.AddScoped<IAuthorService, AuthorService>();
+            builder.Services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
+            builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
+            builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
+            builder.Services.AddScoped<IShelfRepository, ShelfRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IPublisherService, PublisherService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IShelfService, ShelfService>();
             builder.Services.AddAutoMapper(Config =>
             {
                 Config.AddMaps(typeof(AssemplyRefernceMappingProfile).Assembly);

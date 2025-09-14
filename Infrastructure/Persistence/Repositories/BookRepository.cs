@@ -35,12 +35,21 @@ namespace Persistence.Repositories
 
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
-          return await _dbContext.Books.AsNoTracking().ToListAsync();
+          return await _dbContext.Books
+                .AsNoTracking()
+                .Include(b=>b.Publisher)
+                .Include(b=>b.Shelf)
+                .Include(b=>b.Category)
+                .ToListAsync();
         }
 
         public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return await _dbContext.Books.FirstOrDefaultAsync(b => b.BookId == id);
+            return await _dbContext.Books
+                .Include(b => b.Publisher)
+                .Include(b => b.Shelf)
+                .Include(b => b.Category)
+                .FirstOrDefaultAsync(b => b.BookId == id);
         }
 
     }

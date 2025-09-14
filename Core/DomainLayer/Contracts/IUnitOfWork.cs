@@ -10,6 +10,10 @@ namespace DomainLayer.Contracts
     {
         IUserBorrowRepository UserBorrowRepository { get; }
         IAuthorRepository AuthorRepository { get; }
+        IBookAuthorRepository BookAuthorRepository { get; }
+        IPublisherRepository PublisherRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
+        IShelfRepository ShelfRepository { get; }
         Task<int> SaveChangesAsync();
     }
 }

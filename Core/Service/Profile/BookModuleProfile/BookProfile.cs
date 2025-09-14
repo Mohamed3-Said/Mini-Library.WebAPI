@@ -14,7 +14,12 @@ namespace Service.Profile.BookModuleProfile
         {
             CreateMap<CreateBookDto, Book>();
             CreateMap<UpdateBookDto, Book>();
-            CreateMap<Book, BookToReadDto>().ReverseMap();
+            CreateMap<Book, BookToReadDto>()
+            .ForMember(dest => dest.PublisherName, opt => opt.MapFrom(src => src.Publisher.Name))
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Cat_Name))
+            .ForMember(dest => dest.ShelfCode, opt => opt.MapFrom(src => src.Shelf.Code))
+                .ReverseMap();
+
             //BookAuthor : => ICollection
         }
     }

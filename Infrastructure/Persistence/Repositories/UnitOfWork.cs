@@ -16,12 +16,27 @@ namespace Persistence.Repositories
 
         public IAuthorRepository AuthorRepository {  get; }
 
+        public IBookAuthorRepository BookAuthorRepository { get; }
+
+        public IPublisherRepository PublisherRepository { get; } 
+
+        public ICategoryRepository CategoryRepository { get; }
+
+        public IShelfRepository ShelfRepository { get; }
+
         // Constructor
-        public UnitOfWork(LibraryDbContext dbContext, IUserBorrowRepository userBorrowRepository, IAuthorRepository authorRepository)
+        public UnitOfWork(LibraryDbContext dbContext, IUserBorrowRepository userBorrowRepository,
+            IAuthorRepository authorRepository ,
+            IBookAuthorRepository bookAuthorRepository , IPublisherRepository publisherRepository,
+            ICategoryRepository categoryRepository , IShelfRepository shelfRepository)
         {
             _dbContext = dbContext;
             UserBorrowRepository = userBorrowRepository;
             AuthorRepository = authorRepository;
+            BookAuthorRepository = bookAuthorRepository;
+            PublisherRepository = publisherRepository;
+            CategoryRepository = categoryRepository;
+            ShelfRepository = shelfRepository;
         }
 
         public async Task<int> SaveChangesAsync()

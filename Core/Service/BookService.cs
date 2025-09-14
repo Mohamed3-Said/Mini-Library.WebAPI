@@ -18,7 +18,9 @@ namespace Service
         {
             var Book = _mapper.Map<CreateBookDto, Book>(bookDto);
             await _bookRepository.AddAsync(Book);
-            return _mapper.Map<Book, BookToReadDto>(Book);
+
+            var created = await _bookRepository.GetBookByIdAsync(Book.BookId);
+            return _mapper.Map<Book, BookToReadDto>(created!);
 
         }
 
@@ -29,7 +31,10 @@ namespace Service
             {
                 _mapper.Map<UpdateBookDto, Book>(bookDto, book);
                 await _bookRepository.UpdateAsync(book);
-                return _mapper.Map<Book, BookToReadDto>(book);
+
+                //Return Update => include (Publisher Name) , (Shelf Name) , (Category Name)
+                var updated = await _bookRepository.GetBookByIdAsync(id);
+                return _mapper.Map<Book, BookToReadDto>(updated!);
             }
             throw new BookNotFoundedException(id);
 

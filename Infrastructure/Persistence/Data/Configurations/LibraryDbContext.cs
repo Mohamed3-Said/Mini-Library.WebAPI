@@ -1,6 +1,9 @@
 ﻿using DomainLayer.Models.AuthorModule;
 using DomainLayer.Models.BookModule;
+using DomainLayer.Models.CategoryModule;
 using DomainLayer.Models.EmployeeModule;
+using DomainLayer.Models.PublisherModule;
+using DomainLayer.Models.ShelfModule;
 using DomainLayer.Models.UserModule;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +23,9 @@ namespace Persistence.Data.Configurations
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<UserBorrow> UserBorrows { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Shelf> Shelves { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +39,12 @@ namespace Persistence.Data.Configurations
                 .HasKey(b => b.BookId); // Book Primary Key
             modelBuilder.Entity<Author>()
                 .HasKey(a => a.AuthorId); // Author Primary Key
+            modelBuilder.Entity<Publisher>()
+                .HasKey(p => p.Id); // Publisher Primary Key
+            modelBuilder.Entity<Category>()
+                .HasKey(c => c.Id); // Category Primary Key
+            modelBuilder.Entity<Shelf>()
+                .HasKey(s => s.Code); // Shelf Primary Key
 
             // Decimal Precision Configuration
 
@@ -89,7 +101,43 @@ namespace Persistence.Data.Configurations
             .WithMany()
             .HasForeignKey(ub => ub.BookId);
 
+            // Publisher-Book (One-to-Many):
+            modelBuilder.Entity<Publisher>()
+                .HasMany(p => p.Books)
+                .WithOne(b => b.Publisher)
+                .HasForeignKey(b => b.PublisherId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // Category-Book (One-to-Many):
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Books)
+                .WithOne(b => b.Category)
+                .HasForeignKey(b => b.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Shelf-Book (One-to-Many):
+            modelBuilder.Entity<Shelf>()
+                .HasMany(sh => sh.Books)
+                .WithOne(b => b.Shelf)
+                .HasForeignKey(b => b.ShelfCode)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            #region Configure string max lengths
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Category>()
+                .Property(c => c.Cat_Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Shelf>()
+                .Property(s => s.Code)
+                .IsRequired()
+                .HasMaxLength(50);
+            #endregion
         }
 
     }

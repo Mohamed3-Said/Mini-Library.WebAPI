@@ -11,5 +11,9 @@ namespace Shared.DataTransfareObjects.BookModuleDto
     {
         public int BookId { get; set; }
         public string Title { get; set; } = default!;
+
+        public string PublisherName { get; set; } = default!;
+        public string CategoryName { get; set; } = default!;
+        public string ShelfCode { get; set; } = default!;
     }
 }

@@ -12,5 +12,15 @@ namespace Shared.DataTransfareObjects.BookModuleDto
         [Required]
         [MaxLength(100)]
         public string Title { get; set; } = default!;
+
+        [Required]
+        public int PublisherId { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string ShelfCode { get; set; } = default!;
     }
 }
