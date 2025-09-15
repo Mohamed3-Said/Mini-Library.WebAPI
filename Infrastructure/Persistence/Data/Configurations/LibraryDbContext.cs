@@ -101,6 +101,13 @@ namespace Persistence.Data.Configurations
             .WithMany()
             .HasForeignKey(ub => ub.BookId);
 
+            modelBuilder.Entity<UserBorrow>()
+                .HasOne(ub=>ub.Employee)
+                .WithMany(e=>e.UserBorrows)
+                .HasForeignKey(ub=>ub.EmployeeId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Publisher-Book (One-to-Many):
             modelBuilder.Entity<Publisher>()
                 .HasMany(p => p.Books)

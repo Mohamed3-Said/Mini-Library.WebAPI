@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
 using Shared.DataTransfareObjects.UserModuleDto;
 using System;
@@ -11,10 +12,12 @@ namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
+    [Authorize]
     public class UserController(IUserService _userService) : ControllerBase
     {
         //Create User Endpoint => Post : BaseURl\api\User\Create
         [HttpPost("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserToReadDto>> CreateUser(CreateUserDto createUserDto)
         {
             var user = await _userService.CreateUserAsync(createUserDto);
@@ -23,6 +26,7 @@ namespace Presentation.Controllers
 
         //Update User Endpoint => Put : BaseURl\api\User\{ssn}
         [HttpPut("{ssn}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserToReadDto>> UpdateUser(string ssn, UpdateUserDto updateUserDto)
         {
             var user = await _userService.UpdateUserAsync(ssn, updateUserDto);
@@ -31,6 +35,7 @@ namespace Presentation.Controllers
 
         //Delete User Endpoint => Delete : BaseURl\api\User\{ssn}
         [HttpDelete("{ssn}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> DeleteUser(string ssn)
         {
             var user = await _userService.DeleteUserAsync(ssn);
@@ -39,6 +44,7 @@ namespace Presentation.Controllers
 
         //Get All User Endpoint => Get : BaseURl\api\User
         [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<IEnumerable<UserToReadDto>>> GetAllUsers()
         {
             var users = await _userService.GetAllUserAsync();
@@ -47,7 +53,7 @@ namespace Presentation.Controllers
 
         //Get User By SSN Endpoint => Get : BaseURl\api\User\{ssn}
         [HttpGet("{ssn}")]
-        public async Task<ActionResult<UserToReadDto>> GetUserById(string ssn)
+        public async Task<ActionResult<UserToReadDto>> GetUserBySSN(string ssn)
         {
             var user = await _userService.GetUserBySSNAsync(ssn);
             return Ok(user);
@@ -55,6 +61,7 @@ namespace Presentation.Controllers
 
         //Get All User By Employee Id Endpoint => Get : BaseURl\api\User\{EmpId}
         [HttpGet("ByEmployee/{Id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserToReadDto>>> GetUserByEmployeeId(int Id)
         {
             var users = await _userService.GetUsersByEmployeeId(Id);

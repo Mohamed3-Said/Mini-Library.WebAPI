@@ -28,6 +28,7 @@ namespace Persistence.Repositories
                 .AsNoTracking()
                 .Include(ub=>ub.User)
                 .Include(ub=>ub.Book)
+                .Include(ub=>ub.Employee)
                 .ToListAsync();
         }
         public async Task<UserBorrow?> GetByIdAsync(int UserBorrowId)
@@ -36,6 +37,7 @@ namespace Persistence.Repositories
                 .AsNoTracking()
                 .Include(ub => ub.User)
                 .Include(ub => ub.Book)
+                .Include(ub => ub.Employee)
                 .FirstOrDefaultAsync(UB => UB.UserBorrowId == UserBorrowId);
         }
         public async Task<IEnumerable<UserBorrow>> GetBorrowsByBookId(int BookId)
@@ -44,6 +46,7 @@ namespace Persistence.Repositories
                  .AsNoTracking()
                  .Include(ub => ub.User)
                  .Include(ub => ub.Book)
+                 .Include(ub => ub.Employee)
                  .Where(UB=>UB.BookId == BookId)  
                  .ToListAsync();
                 
@@ -55,6 +58,7 @@ namespace Persistence.Repositories
                 .AsNoTracking()
                 .Include(ub => ub.User)
                 .Include(ub => ub.Book)
+                .Include(ub => ub.Employee)
                 .Where(UB=>UB.UserSSN == ssn)
                 .ToListAsync();
         }

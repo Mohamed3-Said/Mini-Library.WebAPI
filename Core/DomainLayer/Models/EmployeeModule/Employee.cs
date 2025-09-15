@@ -1,4 +1,5 @@
-﻿using DomainLayer.Models.UserModule;
+﻿using DomainLayer.Models.BookModule;
+using DomainLayer.Models.UserModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,8 @@ namespace DomainLayer.Models.EmployeeModule
         public List<Employee> Subordinates { get; set; } = new List<Employee>();
         //Relationship USers
         public ICollection<User> Users { get; set; } = new List<User>();
+
+        public ICollection<UserBorrow> UserBorrows { get; set; } = new List<UserBorrow>();
+
     }
 }

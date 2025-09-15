@@ -19,7 +19,11 @@ namespace Service.Profile.BookModuleProfile
             CreateMap<UserBorrow, UserBorrowToReadDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
-                .ReverseMap();
+                .ForMember(dest => dest.EmployeeFullName,
+               opt => opt.MapFrom(src => src.Employee != null ?
+                                          src.Employee.FName + " " + src.Employee.LName
+                                         : string.Empty)).ReverseMap();
+
         }
     }
 }

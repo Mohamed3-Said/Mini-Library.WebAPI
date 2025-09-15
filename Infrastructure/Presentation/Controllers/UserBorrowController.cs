@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using ServiceAbstraction;
 using Shared.DataTransfareObjects.UserBorrowModuleDto;
@@ -14,6 +15,7 @@ namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
+    [Authorize]
     public class UserBorrowController : ControllerBase
     {
         private readonly IUserBorrowService _userBorrowService;
@@ -24,6 +26,7 @@ namespace Presentation.Controllers
         }
         //1- Creat UserBorrow EndPoint => Post : BaseUrl\api\UserBorrow\Create
         [HttpPost("Create")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<UserBorrowToReadDto>> CreateUserBorrow(CreateUserBorrowDto createborrowDto)
         {
             var userborrow = await _userBorrowService.CreateBorrowAsync(createborrowDto);
@@ -32,6 +35,7 @@ namespace Presentation.Controllers
 
         //2- Update UserBorrow EndPoint => Put : BaseUrl\api\UserBorrow\Update
         [HttpPut("Update")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<UserBorrowToReadDto>> UpdateUserBorrow(UpdateUserBorrowDto updateborrowDto)
         {
             var userborrow = await _userBorrowService.UpdateBorrowAsync(updateborrowDto);
@@ -40,6 +44,7 @@ namespace Presentation.Controllers
 
         //3- Delete UserBorrow EndPoint => Delete : BaseUrl\api\UserBorrow\Id
         [HttpDelete("{Id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<bool>> DeleteUserBorrow(int Id)
         {
             var userborrow = await _userBorrowService.DeleteBorrowAsync(Id);
@@ -47,6 +52,7 @@ namespace Presentation.Controllers
         }
         //4- Get All UserBorrow EndPoint => Get : BaseUrl\api\UserBorrow
         [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<IEnumerable<UserBorrowToReadDto>>> GetAllUserBorrow()
         {
             var userborrows = await _userBorrowService.GetAllBorrowsAsync();
@@ -71,6 +77,7 @@ namespace Presentation.Controllers
 
         //6- Get UserBorrow By UserSSN EndPoint => Get : BaseUrl\api\UserBorrow\ByUserSSN\SSN
         [HttpGet("ByUserSSN/{SSN}")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<IEnumerable<UserBorrowToReadDto>>> GetUserBorrowByUserSSN(string SSN)
         {
             var userborrow = await _userBorrowService.GetBorrowsByUserSSNAsync(SSN);

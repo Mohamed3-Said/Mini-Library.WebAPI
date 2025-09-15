@@ -20,6 +20,9 @@ namespace Shared.DataTransfareObjects.UserBorrowModuleDto
         public int BookId { get; set; }
 
         [Required]
+        public int EmployeeId { get; set; }
+
+        [Required]
         public DateTime Date_Borrowed { get; set; }
 
         [Required]

@@ -24,7 +24,7 @@ namespace Mini_Library.CustomExceptionMiddelWare
                 await _next.Invoke(httpcontext);
                 await HandelNotFoundEndPoint(httpcontext);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //Log the Exception in Server 
                 _logger.LogError("Something Went Wrong !!");
@@ -37,14 +37,31 @@ namespace Mini_Library.CustomExceptionMiddelWare
             //3-Return object in The Response Body:
             int stausecode;
             ErrorToReturn Responseobj;
-            switch(ex)
+            switch (ex)
             {
                 case NotfoundException:
                     stausecode = StatusCodes.Status404NotFound;
                     Responseobj = new ErrorToReturn()
-                                            {
+                    {
                         StatusCode = stausecode,
                         ErrorMessage = ex.Message
+                    };
+                    break;
+                case BadRequestException badRequest:
+                    stausecode = StatusCodes.Status400BadRequest;
+                    Responseobj = new ErrorToReturn()
+                    {
+                        StatusCode = stausecode,
+                        ErrorMessage = badRequest.Message,
+                        Errors = badRequest.Errors
+                    };
+                    break;
+                case UnauthorizedAccessException unauthorized:
+                    stausecode = StatusCodes.Status401Unauthorized;
+                    Responseobj = new ErrorToReturn()
+                    {
+                        StatusCode = stausecode,
+                        ErrorMessage = unauthorized.Message
                     };
                     break;
                 case EmpoyeeBadRequestException empoyeeBadRequest:
@@ -56,7 +73,7 @@ namespace Mini_Library.CustomExceptionMiddelWare
                         Errors = empoyeeBadRequest.Errors
                     };
                     break;
-                    default:
+                default:
                     stausecode = StatusCodes.Status500InternalServerError;
                     Responseobj = new ErrorToReturn
                     {
