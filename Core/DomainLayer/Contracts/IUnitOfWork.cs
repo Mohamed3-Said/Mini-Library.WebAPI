@@ -14,6 +14,7 @@ namespace DomainLayer.Contracts
         IPublisherRepository PublisherRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IShelfRepository ShelfRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
         Task<int> SaveChangesAsync();
     }
 }

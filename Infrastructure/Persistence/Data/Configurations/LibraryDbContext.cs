@@ -2,6 +2,7 @@
 using DomainLayer.Models.BookModule;
 using DomainLayer.Models.CategoryModule;
 using DomainLayer.Models.EmployeeModule;
+using DomainLayer.Models.PaymentModule;
 using DomainLayer.Models.PublisherModule;
 using DomainLayer.Models.ShelfModule;
 using DomainLayer.Models.UserModule;
@@ -26,6 +27,8 @@ namespace Persistence.Data.Configurations
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
+
+        public DbSet<Payment> payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

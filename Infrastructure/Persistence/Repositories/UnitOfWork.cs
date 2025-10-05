@@ -24,11 +24,13 @@ namespace Persistence.Repositories
 
         public IShelfRepository ShelfRepository { get; }
 
+        public IPaymentRepository PaymentRepository { get; }
+
         // Constructor
         public UnitOfWork(LibraryDbContext dbContext, IUserBorrowRepository userBorrowRepository,
             IAuthorRepository authorRepository ,
             IBookAuthorRepository bookAuthorRepository , IPublisherRepository publisherRepository,
-            ICategoryRepository categoryRepository , IShelfRepository shelfRepository)
+            ICategoryRepository categoryRepository , IShelfRepository shelfRepository , IPaymentRepository paymentRepository)
         {
             _dbContext = dbContext;
             UserBorrowRepository = userBorrowRepository;
@@ -37,6 +39,7 @@ namespace Persistence.Repositories
             PublisherRepository = publisherRepository;
             CategoryRepository = categoryRepository;
             ShelfRepository = shelfRepository;
+            PaymentRepository = paymentRepository;
         }
 
         public async Task<int> SaveChangesAsync()
