@@ -33,5 +33,21 @@ namespace Presentation.Controllers
             var result = await _authService.RegisterAsync(registerDto);
             return Ok(result);
         }
+        //Endpoint: POST /api/auth/forgot-password
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> ForgetPassword([FromBody] ForgetPasswordDto dto)
+        {
+            await _authService.ForgotPasswordAsync(dto.Email);
+            return Ok(new { message = "If an account with that email exists, a password reset link has been sent." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            await _authService.ResetPasswordAsync(dto);
+            return Ok(new { message = "Password has been reset successfully." });
+        }
     }
+
 }

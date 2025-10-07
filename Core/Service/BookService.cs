@@ -69,5 +69,10 @@ namespace Service
             throw new BookNotFoundedException(id);
         }
 
+        public async Task<IEnumerable<BookToReadDto>> SearchBooksAsync(string keyword)
+        {
+            var books = await _bookRepository.SearchBooksAsync(keyword);
+            return _mapper.Map<IEnumerable<Book>, IEnumerable<BookToReadDto>>(books);
+        }
     }
 }

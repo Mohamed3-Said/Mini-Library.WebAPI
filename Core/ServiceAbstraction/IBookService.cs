@@ -14,5 +14,6 @@ namespace ServiceAbstraction
         Task<BookToReadDto> CreateBookAsync(CreateBookDto bookDto);
         Task<BookToReadDto> UpdateBookAsync(int id , UpdateBookDto bookDto);
         Task<bool> DeleteBookAsync(int id);
+        Task<IEnumerable<BookToReadDto>> SearchBooksAsync(string keyword);
     }
 }

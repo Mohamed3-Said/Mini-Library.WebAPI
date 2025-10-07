@@ -52,5 +52,15 @@ namespace Persistence.Repositories
                 .FirstOrDefaultAsync(b => b.BookId == id);
         }
 
+        public async Task<IEnumerable<Book>> SearchBooksAsync(string keyword)
+        {
+           return await _dbContext.Books
+                .AsNoTracking()
+                .Where(b => b.Title.Contains(keyword))
+                .Include(b => b.Publisher)
+                .Include(b => b.Shelf)
+                .Include(b => b.Category)
+                .ToListAsync();
+        }
     }
 }

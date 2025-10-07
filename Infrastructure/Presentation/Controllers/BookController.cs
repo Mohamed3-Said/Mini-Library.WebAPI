@@ -53,5 +53,14 @@ namespace Presentation.Controllers
             return Ok(Book);
         }
 
+
+        //Search Books EndPoint => GET : BaseUrl\api\Book\Search?keyword=keyword
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<BookToReadDto>>> SearchBooks([FromQuery] string keyword)
+        {
+            var books = await _bookService.SearchBooksAsync(keyword);
+            return Ok(books);
+        }
+
     }
 }

@@ -15,5 +15,8 @@ namespace DomainLayer.Contracts
         Task UpdateAsync(Book book);
         Task DeleteAsync(int id);
 
+        // Search
+        Task<IEnumerable<Book>> SearchBooksAsync(string keyword);
+
     }
 }

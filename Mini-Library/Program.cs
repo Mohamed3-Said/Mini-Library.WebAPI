@@ -63,19 +63,39 @@ namespace Mini_Library
             builder.Services.AddScoped<IPublisherService, PublisherService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IShelfService, ShelfService>();
-            builder.Services.AddScoped<IAuthService, AuthService>();    
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IEmailService, MailKitEmailService>();
             builder.Services.AddAutoMapper(Config =>
             {
                 Config.AddMaps(typeof(AssemplyRefernceMappingProfile).Assembly);
             });
             #endregion
 
+            #region Add Identity Password policy : =>Forget Password , Lockout , User settings
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 8;
+
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.User.RequireUniqueEmail = true;
+            });
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                            opt.TokenLifespan = TimeSpan.FromHours(1));
+
+            #endregion
+
+
             #region JWT Bearer Authentication Middleware
             builder.Services.AddAuthentication(optins =>
             {
                 optins.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 optins.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer( options =>
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -88,7 +108,7 @@ namespace Mini_Library
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTOptions:SecretKey"]!))
                 };
             });
-                
+
             #endregion
 
             var app = builder.Build();
@@ -96,9 +116,9 @@ namespace Mini_Library
             using var scope = app.Services.CreateScope();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             string[] roles = new[] { "Admin", "User", "Employee" };
-            foreach(var role in roles)
+            foreach (var role in roles)
             {
-                if(! await roleManager.RoleExistsAsync(role))
+                if (!await roleManager.RoleExistsAsync(role))
                     await roleManager.CreateAsync(new IdentityRole(role));
             }
             #endregion
@@ -112,7 +132,7 @@ namespace Mini_Library
                     {
                         DisplayRequestDuration = true,
                     };
-                    Options.DocumentTitle = "My Library API Documentation";
+                    Options.DocumentTitle = "My Library-API Documentation";
                     Options.JsonSerializerOptions = new JsonSerializerOptions()
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -125,7 +145,7 @@ namespace Mini_Library
 
             app.UseMiddleware<CustomExceptionHandlerMiddelWare>();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();   
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
